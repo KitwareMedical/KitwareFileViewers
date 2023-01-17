@@ -11,7 +11,7 @@
     "128": "images/kitware-128.png"
   },
   "permissions": [
-    "contextMenus"
+    "contextMenus", "<all_urls>"
   ],
   "background": { 
       "scripts": ["scripts/background.js"]
