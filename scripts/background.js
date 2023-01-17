@@ -3,12 +3,13 @@ console.log('-------------------------');
 chrome.runtime.onInstalled.addListener(async () => {
   const menuIdSeparator = ':'
   const viewers = {
-    'Kitware Glance (.vt[p,i,u], .nrrd)': "https://kitware.github.io/glance/app/?name=data.{fileType}&url={encode:{url}}",
+    'Kitware Glance (.vt[p,i,u], .nrrd)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
     'VTK.js volume viewer (.vti)': "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}",
     'VTK.js geometry viewer (.vtp, .obj)': "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}",
     'VTK.js scene viewer (.vtkjs)': "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}",
     'VTK.js obj viewer (.obj, .mtl)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
-    'itk-vtk-viewer (.nrrd, .vti)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}/data.{fileType}}',
+    // FIXME: does not work if URL already contains a name
+    'itk-vtk-viewer (.nrrd, .vti)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}/{fileName}.{fileType}}',
   };
   const fileTypes = {
     vtkXMLPolyData: 'vtp',
@@ -35,7 +36,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     });
   });
 
-  function detectFileType(fileHeader) {
+  async function detectFileType(fileHeader) {
     const fileHeaderString = new TextDecoder().decode(fileHeader);
     const re = /<VTKFile type="(\w*)"/i;
     const vtkType = fileHeaderString.match(re);
@@ -76,11 +77,25 @@ chrome.runtime.onInstalled.addListener(async () => {
         newHeader.set(value, header.length);
         header = newHeader;
       }
-      return detectFileType(header);
+      return await detectFileType(header);
     }
     catch (error) {
       console.error(error)
     };
+  }
+
+  function getFileTypeFromURL(url) {
+    const supportedExtensions = Object.values(fileTypes);
+    for (let i = 0; i < supportedExtensions.length; ++i) {
+      const extension = supportedExtensions[i];
+      const regex = new RegExp('[^/]+(?=\.'+ extension + '\b)', 'i');
+      const match = url.match(regex);
+      if (match) {
+        console.log('match', match);
+        return {fileName: match[0], fileType: extension};
+      }
+    }
+    return {fileName: undefined, fileType: undefined};
   }
 
   async function openViewer(info, tab) {
@@ -100,9 +115,14 @@ chrome.runtime.onInstalled.addListener(async () => {
       url = info.linkUrl;
     }
     console.log('URL:', url);
-    const fileType = await fetchFileType(url);
-    console.log('FileType', fileType);
+    let {fileName, fileType} = getFileTypeFromURL(url);
+    console.log('From URL: file name= ', fileName, ', file type= ', fileType);
+    if (!fileType) {
+      fileType = await fetchFileType(url);
+      console.log('From file header: filet type=', fileType);
+    }
     const viewerUrl = viewer
+      .replaceAll('{fileName}', fileName || 'data')
       .replaceAll('{fileType}', fileType)
       .replaceAll('{url}', url)
       .replaceAll(/{encode:(.*)}/g, (_, group) => encodeURIComponent(group));
