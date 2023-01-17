@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Open...",
   "version": "1.0",
   "description": "Open URLs with Kitware online viewers. Right click on link or selection to choose a viewer",
@@ -11,9 +11,9 @@
     "128": "images/kitware-128.png"
   },
   "permissions": [
-    "contextMenus"
+    "contextMenus", "<all_urls>"
   ],
   "background": { 
-      "service_worker": "scripts/background.js"
+      "scripts": ["scripts/background.js"]
     }
 }
