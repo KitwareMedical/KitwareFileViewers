@@ -61,7 +61,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     const MAX_HEADER_LENGTH = 256;
     try {
       const response = await fetch(url, {headers: {
-        'Range': `bytes=0-${MAX_HEADER_LENGTH-1}`
+        // 'Range': `bytes=0-${MAX_HEADER_LENGTH-1}`
       },})
       if (!response.ok) {
         console.log('aborted', response);
