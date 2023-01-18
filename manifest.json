@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Open...",
   "version": "1.0",
-  "description": "Open URLs with Kitware online viewers. Right click on link or selection to choose a viewer",
+  "description": "Open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer. Right click on link or selection to choose a viewer",
 
   "icons": {
     "16": "images/kitware-16.png",
