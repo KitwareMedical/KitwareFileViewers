@@ -31,11 +31,19 @@ First the extension attempts to extract the file extension from the URL.
 Because some URLs may not contain the file extension, as an optional second step, the extension downloads a few bytes of the file and attempts to detect the file extension by reading the file headers.
 This is not perfect and does not work well with ZIP archives because no unzipping is performed (yet).
 Here is the explicit list of files supported by the extension :
- - vtp (vtkPolyData)
- - vti (vtkImageData)
- - vtu (vtkUnstructedGrid)
+ - dcm (DICOM)
+ - glance (Kitware glance state file)
+ - mha (Meta)
+ - nii (Nifti)
  - nrrd
-
+ - obj
+ - obz (Zip of obj+mtl)
+ - stl
+ - vti (vtkImageData)
+ - vtk (Legacy VTK)
+ - vtkjs (Zip)
+ - vtp (vtkPolyData)
+ - vtu (vtkUnstructedGrid)
 ## Install
 
 Until the extension is published, you have to manually install it.
