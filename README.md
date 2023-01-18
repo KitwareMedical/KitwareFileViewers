@@ -71,7 +71,7 @@ python.exe -m http.server 8000
 
 ```
 npm install -g http-server
-http-server -p 8000
+http-server -p 8000 --cors
 ```
 
 Then you can open on your browser localhost:8000 to see your files.
