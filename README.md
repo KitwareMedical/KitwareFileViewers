@@ -1,6 +1,6 @@
 # OpenInBrowserExtension
 
-Cross-browser extension that lets you conveniently open URLs with Kitware online viewers.
+Cross-browser extension that lets you conveniently open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer.
 
 ![Screenshot](images/Screenshot.png)
 *Example of usage with [Girder](https://girder.readthedocs.io/en/latest/) (e.g. https://data.kitware.com)*
