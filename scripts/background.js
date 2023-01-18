@@ -8,26 +8,34 @@ const dataTypes = {
 };
 
 const fileTypes = {
-  vtkXMLPolyData: 'vtp',
-  vtkXMLImageData: 'vti',
-  vtkXMLUnstructuredGrid: 'vtu',
-  legacyVTK: 'vtk',
-  zip: 'zip',
   DICOM: 'dcm',
-  nrrd: 'nrrd',
-  nifti: 'nii',
+  glance: 'glance',
+  legacyVTK: 'vtk',
   meta: 'mha',
+  nifti: 'nii',
+  nrrd: 'nrrd',
+  obj: 'obj',
+  obz: 'obz', // zip of obj + mtl
   stl: 'stl',
+  vtkjs: 'vtkjs',
+  vtkXMLImageData: 'vti',
+  vtkXMLPolyData: 'vtp',
+  vtkXMLUnstructuredGrid: 'vtu',
+  zip: 'zip',
 }
 
 const fileTypeToExtension = {
-  vtp: dataTypes.PolyData,
-  vti: dataTypes.ImageData,
-  vtu: dataTypes.UnstructuredGrid,
-  nrrd: dataTypes.ImageData,
-  mha: dataTypes.ImageData,
   dcm: dataTypes.ImageData,
+  glance: dataTypes.Scene,
+  mha: dataTypes.ImageData,
+  nrrd: dataTypes.ImageData,
+  obj: dataTypes.PolyData,
+  obz: dataTypes.Scene,
   stl: dataTypes.PolyData,
+  vti: dataTypes.ImageData,
+  vtkjs: dataTypes.Scene,
+  vtp: dataTypes.PolyData,
+  vtu: dataTypes.UnstructuredGrid,
 }
 
 function isVTKFile(fileHeaderString) {
@@ -107,13 +115,13 @@ function isSTLMesh(fileHeader) {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-  const menuIdSeparator = ':'
+  const menuIdSeparator = ':';
   const viewers = {
-    'Kitware Glance (.vt?, .stl, .nrrd, .nii, .mha, .dcm)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
+    'Kitware Glance (.glance, .vtkjs, .vt?, .stl, .obj, .obz, .nrrd, .nii, .mha, .dcm)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
     'VTK.js volume viewer (.vti)': "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}",
     'VTK.js geometry viewer (.vtp)': "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}",
     'VTK.js scene viewer (.vtkjs)': "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}",
-    'VTK.js obj viewer (.obj, .mtl)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
+    'VTK.js obj viewer (.obz, .zip)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
     'itk-vtk-viewer (.vti, .nrrd, .nii, .mha, .dcm, .stl)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}{noFileName:/{fileName}.{fileType}}}',
   };
   Object.keys(viewers).forEach((name) => {
