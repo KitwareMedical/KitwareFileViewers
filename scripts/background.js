@@ -103,14 +103,22 @@ function isNiftiImage(fileHeader) {
 
 function isSTLMesh(fileHeader) {
   const fileHeaderString = new TextDecoder().decode(fileHeader);
+  // Ascii
   if (fileHeaderString.startsWith('solid ')) {
     return {fileType: fileTypes.stl, dataType: dataTypes.PolyData };
   }
-  // FIXME: not very robust
-  const numberOfTriangles = new Uint32Array(fileHeader.buffer, 80, 1);
-  // Number of triangles should be reasonable
-  if (numberOfTriangles > 0 && numberOfTriangles < 4294967295) {
-    return {fileType: fileTypes.stl, dataType: dataTypes.PolyData };
+  // Binary
+  if (fileHeader.length > 84) {
+    // FIXME: not very robust
+    const emptyHeader = new Uint32Array(fileHeader.buffer, 40, 10);
+    if (emptyHeader.every((val) => val === 0)) {
+      const numberOfTriangles = new Uint32Array(fileHeader.buffer, 80, 1);
+      // Number of triangles should be reasonable
+      if (numberOfTriangles > 0 && numberOfTriangles < 4294967295) {
+        console.log('is stl');
+        return {fileType: fileTypes.stl, dataType: dataTypes.PolyData };
+      }
+    }
   }
 }
 
