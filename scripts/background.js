@@ -258,10 +258,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       }
     }
     const viewerUrl = viewer
-      .replaceAll(/\{noFileName:([^\{\}]*\{[^\{\}]*\}[^\{\}]*)+\}/g, '')
       .replaceAll('{fileName}', fileName || 'data')
       .replaceAll('{fileType}', fileType)
       .replaceAll('{url}', url)
+      .replaceAll(/{noFileName:([^\}]*)}/g, (_, group) => fileName ? '' : group)
       .replaceAll(/{encode:(.*)}/g, (_, group) => encodeURIComponent(group));
     chrome.tabs.create({url: viewerUrl});
   }
