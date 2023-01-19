@@ -1,6 +1,6 @@
 # OpenInBrowserExtension
 
-Cross-browser extension that lets you conveniently open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer.
+Cross-browser extension that lets you conveniently open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer. It can also open 🖥️ desktop viewers such as 3D Slicer.
 
 ![Screenshot](images/Screenshot.png)
 *Example of usage with [Girder](https://girder.readthedocs.io/en/latest/) (e.g. https://data.kitware.com)*
@@ -19,10 +19,13 @@ It should work (not tested) with:
 
 ## Viewer support
 
-The following viewers are supported:
+The following 💻 online viewers are supported:
  - [Kitware Glance](https://kitware.github.io/glance/)
  - [VTK.js viewer examples](https://kitware.github.io/vtk-js/examples/)
  - [itk-vtk-viewer](https://kitware.github.io/itk-vtk-viewer/docs/)
+
+The following 🖥️ desktop viewers are supported:
+ - [3D Slicer](https://www.slicer.org/)
 
 ## File support
 
@@ -83,3 +86,8 @@ http-server -p 8000 --cors
 ```
 
 Then you can open on your browser localhost:8000 to see your files.
+
+### 3D Slicer
+
+Shall you want to open your URLs with 3D Slicer, you need to save the [LoadRemoteFile module](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L19-L20) into the qt-scripted-modules folder of 3D Slicer.
+It will work automatically on Windows. There is [more setup required](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L13) on other OS.
