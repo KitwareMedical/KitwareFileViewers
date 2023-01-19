@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Open...",
+  "name": "Open…",
   "version": "1.0",
   "description": "Open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer. Right click on link or selection to choose a viewer",
 
@@ -11,7 +11,8 @@
     "128": "images/kitware-128.png"
   },
   "permissions": [
-    "contextMenus", "<all_urls>"
+    "contextMenus",
+    "<all_urls>"
   ],
   "background": { 
       "scripts": ["scripts/background.js"]

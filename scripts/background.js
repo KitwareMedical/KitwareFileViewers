@@ -124,28 +124,39 @@ function isSTLMesh(fileHeader) {
 
 chrome.runtime.onInstalled.addListener(async () => {
   const menuIdSeparator = ':';
+  const viewerTypes = {
+    online: "💻",
+    desktop: "🖥️",
+  }
   const viewers = {
-    'Kitware Glance (.glance, .vtkjs, .vt?, .stl, .obj, .obz, .nrrd, .nii, .mha, .dcm)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
-    'VTK.js volume viewer (.vti)': "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}",
-    'VTK.js geometry viewer (.vtp)': "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}",
-    'VTK.js scene viewer (.vtkjs)': "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}",
-    'VTK.js obj viewer (.obz, .zip)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
-    'itk-vtk-viewer (.vti, .nrrd, .nii, .mha, .dcm, .stl)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}{noFileName:/{fileName}.{fileType}}}',
+    online: {
+      'Kitware Glance (.glance, .vtkjs, .vt?, .stl, .obj, .obz, .nrrd, .nii, .mha, .dcm)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
+      'VTK.js volume viewer (.vti)': "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}",
+      'VTK.js geometry viewer (.vtp)': "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}",
+      'VTK.js scene viewer (.vtkjs)': "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}",
+      'VTK.js obj viewer (.obz, .zip)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
+      'itk-vtk-viewer (.vti, .nrrd, .nii, .mha, .dcm, .stl)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}{noFileName:/{fileName}.{fileType}}}',
+    },
+    desktop: {
+      '3D Slicer (.nrrd, .nii, .mha, .dcm)': 'slicer://viewer/?download={encode:{url}{noFileName:/{fileName}.{fileType}}}'
+    }
   };
-  Object.keys(viewers).forEach((name) => {
-    chrome.contextMenus.create({
-      id: `link${menuIdSeparator}${name}`,
-      title: `... link in ${name}`,
-      type: 'normal',
-      contexts: ['link'],
+  Object.keys(viewers).forEach((viewerType) => {
+    Object.keys(viewers[viewerType]).forEach((name) => {
+      chrome.contextMenus.create({
+        id: `${viewerType}${menuIdSeparator}link${menuIdSeparator}${name}`,
+        title: `… 🔗 in ${viewerTypes[viewerType]}${name}`,
+        type: 'normal',
+        contexts: ['link'],
+      });
     });
-  });
-  Object.keys(viewers).forEach((name) => {
-    chrome.contextMenus.create({
-      id: `selection${menuIdSeparator}${name}`,
-      title: `... %s in ${name}`,
-      type: 'normal',
-      contexts: ['selection'],
+    Object.keys(viewers.online).forEach((name) => {
+      chrome.contextMenus.create({
+        id: `${viewerType}${menuIdSeparator}selection${menuIdSeparator}${name}`,
+        title: `… %s in ${viewerTypes[viewerType]}${name}`,
+        type: 'normal',
+        contexts: ['selection'],
+      });
     });
   });
 
@@ -219,16 +230,15 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
 
   async function openViewer(info, tab) {
-    const menuItemId = info.menuItemId.split(menuIdSeparator);
-    const viewerName = menuItemId[1];
-    const viewer = viewers[viewerName];
+    const [viewerType, sourceType, viewerName] = info.menuItemId.split(menuIdSeparator);
+    const viewer = viewers[viewerType][viewerName];
     if (!viewer) {
-      console.log('NOT ', viewerName);
+      console.log('NOT', viewerName);
       // Not a supported menu item
       return;
     }
     let url;
-    if (menuItemId[0] === 'selection') {
+    if (sourceType === 'selection') {
       url = info.selectionText;
     }
     else { 
@@ -248,10 +258,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       }
     }
     const viewerUrl = viewer
-      .replaceAll(/\{noFileName:([^\{\}]*\{[^\{\}]*\}[^\{\}]*)+\}/g, '')
       .replaceAll('{fileName}', fileName || 'data')
       .replaceAll('{fileType}', fileType)
       .replaceAll('{url}', url)
+      .replaceAll(/{noFileName:([^\}]*)}/g, (_, group) => fileName ? '' : group)
       .replaceAll(/{encode:(.*)}/g, (_, group) => encodeURIComponent(group));
     chrome.tabs.create({url: viewerUrl});
   }
