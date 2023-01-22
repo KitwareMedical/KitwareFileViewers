@@ -234,22 +234,76 @@ function mergeFileTypes(fileTypes, otherFileTypes) {
   return matchingFileTypes;
 }
 
+const VIEWERS = [];
+
+VIEWERS.push({
+  name: 'Kitware Glance',
+  type: 'online',
+  extension: ['.glance', '.vtkjs', '.vt?', '.stl', '.obj', '.obz', '.nrrd', '.nii', '.mha', '.dcm'],
+  url: "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: 'VTK.js',
+  type: 'online',
+  extension: ['.vti', '.vtp', '.vtkjs', '.obz', '.zip'],
+});
+
+VIEWERS.push({
+  name: 'Volume viewer',
+  type: 'online',
+  extension: ['.vti'],
+  parent: 'VTK.js',
+  url: "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: 'Geometry viewer',
+  type: 'online',
+  extension: ['.vtp'],
+  parent: 'VTK.js',
+  url: "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: 'Scene viewer',
+  type: 'online',
+  extension: ['.vtkjs'],
+  parent: 'VTK.js',
+  url: "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: 'Obj viewer',
+  type: 'online',
+  extension: ['.obz', '.zip'],
+  parent: 'VTK.js',
+  url: "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: 'itk-vtk-viewer',
+  type: 'online',
+  extension: ['.vti', '.nrrd', '.nii', '.mha', '.dcm', '.stl'],
+  url: "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
+  name: '3D Slicer',
+  type: 'desktop',
+  extension: ['.nrrd', '.nii', '.mha', '.dcm'],
+  url: "slicer://viewer/?download={encode:{url}{noFileName:/{fileName}.{fileType}}}"
+});
+
+function getViewers(type, viewers = VIEWERS) {
+  return viewers.filter((viewer) => viewer.type === type);
+}
+
+function getViewer(type, name, viewers = VIEWERS) {
+  return viewers.find((viewer) => viewer.type === type && viewer.name === name);
+}
 
 chrome.runtime.onInstalled.addListener(async () => {
-  const viewers = {
-    online: {
-      'Kitware Glance (.glance, .vtkjs, .vt?, .stl, .obj, .obz, .nrrd, .nii, .mha, .dcm)': "https://kitware.github.io/glance/app/?name={fileName}.{fileType}&url={encode:{url}}",
-      'VTK.js (.vti, .vtp, .vtkjs, .obz, .zip)': "",
-      'VTK.js (.vti, .vtp, .vtkjs, .obz, .zip)/Volume viewer (.vti)': "https://kitware.github.io/vtk-js/examples/VolumeViewer/VolumeViewer.html?fileURL={encode:{url}}",
-      'VTK.js (.vti, .vtp, .vtkjs, .obz, .zip)/Geometry viewer (.vtp)': "https://kitware.github.io/vtk-js/examples/GeometryViewer/GeometryViewer.html?fileURL={encode:{url}}",
-      'VTK.js (.vti, .vtp, .vtkjs, .obz, .zip)/Scene viewer (.vtkjs)': "https://kitware.github.io/vtk-js/examples/SceneExplorer/SceneExplorer.html?fileURL={encode:{url}}",
-      'VTK.js (.vti, .vtp, .vtkjs, .obz, .zip)/Obj viewer (.obz, .zip)': "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}",
-      'itk-vtk-viewer (.vti, .nrrd, .nii, .mha, .dcm, .stl)': 'https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={encode:{url}{noFileName:/{fileName}.{fileType}}}',
-    },
-    desktop: {
-      '3D Slicer (.nrrd, .nii, .mha, .dcm)': 'slicer://viewer/?download={encode:{url}{noFileName:/{fileName}.{fileType}}}'
-    }
-  };
   const menuIdSeparator = ':';
   const viewerTypes = {
     online: "💻",
@@ -257,36 +311,35 @@ chrome.runtime.onInstalled.addListener(async () => {
   }
   const viewersIds = {selection: {}, link: {}};
   function addActionInContextMenu(viewerType) {
-    Object.keys(viewers[viewerType]).forEach((fullName) => {
-      let displayName = fullName;
-      const hierarchy = fullName.split('/');
-      let parent = null;
+    getViewers(viewerType).forEach((viewer) => {
+      let displayName = viewer.name;
       let linkPrefix = `… 🔗 in ${viewerTypes[viewerType]}`;
       let selectionPrefix = `… 🔗 in ${viewerTypes[viewerType]}`;
-      if (hierarchy.length > 1) {
-        parent = hierarchy[hierarchy.length - 2];
-        displayName = hierarchy[hierarchy.length - 1];
+      if (viewer.parent > 1) {
         linkPrefix = '';
         selectionPrefix = '';
       }
-      viewersIds.link[fullName] = chrome.contextMenus.create({
-        id: `${viewerType}${menuIdSeparator}link${menuIdSeparator}${fullName}`,
+      if (viewer.extension) {
+        displayName = displayName + '(' + viewer.extension.join(', ') + ')';
+      }
+      viewersIds.link[viewer.name] = chrome.contextMenus.create({
+        id: `${viewerType}${menuIdSeparator}link${menuIdSeparator}${viewer.name}`,
         title: `${linkPrefix}${displayName}`,
         type: 'normal',
         contexts: ['link'],
-        parentId: viewersIds.link[parent]
+        parentId: viewersIds.link[viewer.parent]
       });
-      viewersIds.selection[fullName] = chrome.contextMenus.create({
-        id: `${viewerType}${menuIdSeparator}selection${menuIdSeparator}${fullName}`,
+      viewersIds.selection[viewer.name] = chrome.contextMenus.create({
+        id: `${viewerType}${menuIdSeparator}selection${menuIdSeparator}${viewer.name}`,
         title: `${selectionPrefix}${displayName}`,
         type: 'normal',
         contexts: ['selection'],
-        parentId: viewersIds.selection[parent]
+        parentId: viewersIds.selection[viewer.parent]
       });
     });
   };
   
-  Object.keys(viewers).forEach((viewerType, index) => {
+  Object.keys(viewerTypes).forEach((viewerType, index) => {
     if (index > 0) {
       chrome.contextMenus.create({
         id: `separator${menuIdSeparator}${index}`,
@@ -436,7 +489,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
   async function openViewer(info, tab) {
     const [viewerType, sourceType, viewerName] = info.menuItemId.split(menuIdSeparator);
-    const viewer = viewers[viewerType][viewerName];
+    const viewer = getViewer(viewerType, viewerName);
     if (!viewer) {
       console.log('NOT', viewerName);
       // Not a supported menu item
@@ -450,7 +503,6 @@ chrome.runtime.onInstalled.addListener(async () => {
       url = info.linkUrl;
     }
     console.log('URL:', url);
-    // let {fileName, fileType, dataType} = getFileTypeFromURL(url);
     let matchingFileTypes = [];
     if (matchingFileTypes.length != 1) {
       matchingFileTypes = getFileTypeFromURL(url);
@@ -468,7 +520,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     if (matchingFileTypes.length >= 1) {
       const {fileName, extension} = matchingFileTypes[0];
       const fileType = [extension].flat()[0];
-      const viewerUrl = viewer
+      const viewerUrl = viewer.url
         .replaceAll('{fileName}', fileName || 'data')
         .replaceAll('{fileType}', fileType)
         .replaceAll('{url}', url)
