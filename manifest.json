@@ -16,5 +16,6 @@
   ],
   "background": { 
       "scripts": ["scripts/background.js"]
-    }
+    },
+  "options_page": "options.html"
 }

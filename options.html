@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <style type="text/css">
+        body {
+            max-width: 468pt;
+            margin: auto;
+            font-family: "Arial"
+        }
+
+        p {
+            margin: 0;
+            color: #000000;
+            font-size: 11pt;
+        }
+
+        img {
+            display: block;
+            margin: auto;
+        }
+
+        .header {
+            padding-top: 40pt;
+            padding-bottom: 0pt;
+        }
+        .footer {
+            padding-top: 20pt;
+            padding-bottom: 80pt;
+        }
+
+        h1 {
+            text-align: center
+        }
+        </style>
+</head>
+
+<body>
+    <img src="images/kitware-128.png" class="header"/>
+    <h1><i>Open in&hellip;</i> extension</h1>
+    <img src="images/Screenshot.png" width="468"/>
+    <h2>How it works</h2>
+    <p>File information (i.e. the filename and the file type/extension) is extracted
+from the URL by first parsing the URL and if it fails, by doing HTTP requests to guess the type of the file.
+With the collected information, a URL is generated for the chosen viewer to pass the URL to it.</p>
+    <h2>3D Slicer</h2>
+    <p>If you want to open your URLs with 3D Slicer, you need to <a href="https://download.slicer.org/">
+install Slicer</a> and save the <a href="https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8%23file-loadremotefile-py-L19-L20">
+    LoadRemoteFile module</a> into the <i>qt-scripted-modules</i> folder of 3D Slicer.
+    It will work automatically on Windows.</p>
+    <p>There is <a href="https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8%23file-loadremotefile-py-L13">
+more setup required</a> on other OS.</p>
+    <h2>Support</h2>
+    <p>This extension has been developed by <a href="http://kitware.eu/">Kitware Europe</a>. Bugs can be reported on 
+<a href="https://github.com/KitwareMedical/OpenInBrowserExtension/issues">github</a>.
+Please <a href="https://www.kitware.com/contact/">contact us</a> if you have requests about extending or customizing
+the extension or the viewers</p>
+<img src="images/kitware-128.png" class="footer"/>
+</body>
+</html>
