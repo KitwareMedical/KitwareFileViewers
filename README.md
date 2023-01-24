@@ -21,8 +21,9 @@ It should work (not tested) with:
 
 The following 💻 online viewers are supported:
  - [Kitware Glance](https://kitware.github.io/glance/)
- - [VTK.js viewer examples](https://kitware.github.io/vtk-js/examples/)
+ - [Kitware VolView](https://volview.kitware.com/)
  - [itk-vtk-viewer](https://kitware.github.io/itk-vtk-viewer/docs/)
+ - [VTK.js viewer examples](https://kitware.github.io/vtk-js/examples/)
 
 The following 🖥️ desktop viewers are supported:
  - [3D Slicer](https://www.slicer.org/)

@@ -1,5 +1,3 @@
-console.log('----------reloaded---------------');
-
 const dataTypes = {
   ImageData: 'ImageData',
   PolyData: 'PolyData',
@@ -244,6 +242,20 @@ VIEWERS.push({
 });
 
 VIEWERS.push({
+  name: 'Kitware VolView',
+  type: 'online',
+  extension: ['.zip', '.dcm', '.mha'],
+  url: "https://volview.netlify.app/?names=[{fileName}.{fileType}]&urls=[{encode:{url}}]"
+});
+
+VIEWERS.push({
+  name: 'itk-vtk-viewer',
+  type: 'online',
+  extension: ['.vti', '.nrrd', '.nii', '.mha', '.dcm', '.stl'],
+  url: "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}"
+});
+
+VIEWERS.push({
   name: 'VTK.js',
   type: 'online',
   extension: ['.vti', '.vtp', '.vtkjs', '.obz', '.zip'],
@@ -278,13 +290,6 @@ VIEWERS.push({
   type: 'online',
   extension: ['.obz', '.zip'],
   parent: 'VTK.js',
-  url: "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}"
-});
-
-VIEWERS.push({
-  name: 'itk-vtk-viewer',
-  type: 'online',
-  extension: ['.vti', '.nrrd', '.nii', '.mha', '.dcm', '.stl'],
   url: "https://kitware.github.io/vtk-js/examples/OBJViewer/OBJViewer.html?fileURL={encode:{url}}"
 });
 
