@@ -28,6 +28,15 @@ The following 💻 online viewers are supported:
 The following 🖥️ desktop viewers are supported:
  - [3D Slicer](https://www.slicer.org/)
 
+
+
+|              |                |
+|:------------------:|:------------------: |
+|![VolView](images/VolView.png) *Kitware VolView* | ![Glance](images/Glance.png) *Kitware Glance*
+|![itk-vtk-viewer](images/itk-vtk-viewer.png) *itk-vtk-viewer*| ![VTK.js examples](images/vtk-js-examples.png) *VTK.js examples* |
+| ![Slicer](images/Slicer.png) *3D Slicer*
+
+
 ## File support
 
 Most viewers need to be opened with the file extension as parameter.
@@ -48,14 +57,14 @@ Here is the explicit list of files supported by the extension :
  - vtkjs (Zip)
  - vtp (vtkPolyData)
  - vtu (vtkUnstructedGrid)
-## Install
+# Install
 
 Until the extension is published, you have to manually install it.
 
-### Chrome
+## Chrome
 Follow the [Loading unpacked extension tutorial](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
 
-### Firefox
+## Firefox
 
 Follow the [Temporary installation tutorial](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/).
 
@@ -63,23 +72,23 @@ Follow the [Temporary installation tutorial](https://extensionworkshop.com/docum
 
 Follow the [Sideload an extension tutorial](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).
 
-## Usage
+# Usage
 
 Right click on a link in any webpage to open the context menu.
 
 You can also select the text of an url and right click to open the context menu.
 
-### Local files
+## Local files
 
 You can also visualize local files. You just have to serve your files. Here are some one-liners to help you do so:
 
-#### Python
+### Python
 
 ```
 python.exe -m http.server 8000
 ```
 
-#### Node.js
+### Node.js
 
 ```
 npm install -g http-server
@@ -88,7 +97,10 @@ http-server -p 8000 --cors
 
 Then you can open on your browser localhost:8000 to see your files.
 
-### 3D Slicer
+## 3D Slicer
 
 Shall you want to open your URLs with 3D Slicer, you need to save the [LoadRemoteFile module](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L19-L20) into the qt-scripted-modules folder of 3D Slicer.
 It will work automatically on Windows. There is [more setup required](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L13) on other OS.
+
+# Help and Support #
+[Kitware](https://www.kitware.com/) offers advanced software R&D solutions and services. Find out how we can help with your next project.
