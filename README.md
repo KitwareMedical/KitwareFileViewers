@@ -104,3 +104,15 @@ It will work automatically on Windows. There is [more setup required](https://gi
 
 # Help and Support #
 [Kitware](https://www.kitware.com/) offers advanced software R&D solutions and services. Find out how we can help with your next project.
+
+# Packaging #
+
+## Manifest v2 package##
+
+Copy manifests/manifest-v2.json into manifest.json.
+Create a zip archive.
+
+## Manifest v3 package ##
+
+Copy manifests/manifest-v3.json into manifest.json.
+Create a zip archive.
