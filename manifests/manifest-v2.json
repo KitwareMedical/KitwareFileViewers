@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Open…",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Open any file URL (link or text) with Kitware online viewers such as Glance, VolView or with desktop 3D Slicer with a right click",
 
   "author": "julien.finet@kitware.com",
@@ -20,5 +20,7 @@
   "background": { 
       "scripts": ["scripts/background.js"]
     },
-  "options_page": "options.html"
+  "options_ui": {
+    "page": "options.html"
+  }
 }
