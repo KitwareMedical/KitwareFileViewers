@@ -18,7 +18,8 @@
     "<all_urls>"
   ],
   "background": { 
-      "scripts": ["scripts/background.js"]
+      "scripts": ["scripts/background.js"],
+      "persistent": false
     },
   "options_ui": {
     "page": "options.html"
