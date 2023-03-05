@@ -13,12 +13,8 @@
     "48": "images/kitware-48.png",
     "128": "images/kitware-128.png"
   },
-  "permissions": [
-    "contextMenus",
-    "<all_urls>"
-  ],
-  "background": {
-      "service_worker": "scripts/background.js"
-    },
-  "options_page": "options.html"
+  "permissions": ["contextMenus"],
+  "background": { "service_worker": "scripts/background.js" },
+  "options_page": "options.html",
+  "host_permissions": ["*://*/*"]
 }
