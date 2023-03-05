@@ -1,3 +1,4 @@
+console.log('Installing Open...');
 const dataTypes = {
   ImageData: 'ImageData',
   PolyData: 'PolyData',
@@ -310,6 +311,7 @@ function getViewer(type, name, viewers = VIEWERS) {
 
 const menuIdSeparator = ':';
 chrome.runtime.onInstalled.addListener(async () => {
+  console.log('onInstalled...');
   const viewerTypes = {
     online: "💻",
     desktop: "🖥️",
@@ -341,6 +343,7 @@ chrome.runtime.onInstalled.addListener(async () => {
         contexts: ['selection'],
         parentId: viewersIds.selection[viewer.parent]
       });
+      console.log('create context menus for viewer', viewer.name, viewersIds.link[viewer.name], viewersIds.selection[viewer.name]);
     });
   };
   
@@ -495,6 +498,7 @@ async function getFileTypeFromFirstBytes(url, fileTypes) {
 }
 
 async function openViewer(info, tab) {
+  console.log('onClicked...')
   const [viewerType, sourceType, viewerName] = info.menuItemId.split(menuIdSeparator);
   const viewer = getViewer(viewerType, viewerName);
   if (!viewer) {
