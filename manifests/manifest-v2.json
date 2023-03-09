@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "Open…",
   "version": "1.0.4",
+  "name": "Kitware File Viewers",
   "description": "Open any file URL (link or text) with Kitware online viewers such as Glance, VolView or with desktop 3D Slicer with a right click",
 
   "author": "julien.finet@kitware.com",
-  "homepage_url": "https://github.com/KitwareMedical/OpenInBrowserExtension",
+  "homepage_url": "https://github.com/KitwareMedical/KitwareFileViewers",
 
   "icons": {
     "16": "images/kitware-16.png",
