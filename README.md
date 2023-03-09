@@ -1,4 +1,4 @@
-# OpenInBrowserExtension
+# KitwareFileViewers
 
 Cross-browser extension that lets you conveniently open URLs with Kitware online viewers such as Glance, VTK.js or itk-vtk-viewer. It can also open 🖥️ desktop viewers such as 3D Slicer.
 

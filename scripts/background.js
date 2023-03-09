@@ -320,9 +320,9 @@ chrome.runtime.onInstalled.addListener(async () => {
   function addActionInContextMenu(viewerType) {
     getViewers(viewerType).forEach((viewer) => {
       let displayName = viewer.name;
-      let linkPrefix = `… 🔗 in ${viewerTypes[viewerType]}`;
-      let selectionPrefix = `… 🔗 in ${viewerTypes[viewerType]}`;
-      if (viewer.parent > 1) {
+      let linkPrefix = `Open in ${viewerTypes[viewerType]}`;
+      let selectionPrefix = `Open in ${viewerTypes[viewerType]}`;
+      if (viewer.parent != null) {
         linkPrefix = '';
         selectionPrefix = '';
       }
