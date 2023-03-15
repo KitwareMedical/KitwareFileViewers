@@ -6,18 +6,14 @@ Cross-browser extension that lets you conveniently open URLs with Kitware online
 *Example of usage with [Girder](https://girder.readthedocs.io/en/latest/) (e.g. https://data.kitware.com)*
 
 
-## Browser support
+# Install
 
-It is known to work with at least the following desktop browsers:
- - Firefox 108.0.2
- - Chrome 108.0.5359.126
- - Edge 109.0.1518.55
+Install the extension from your browser web store:
+ - [Chrome](https://chrome.google.com/webstore/detail/kitware-file-viewers/lklknpjabnmfefcfhmhdnhebkpindcld) 
+ - [Firefox](https://addons.mozilla.org/en-US/firefox/addon/kitware-file-viewers/)
+ - [Edge](https://microsoftedge.microsoft.com/addons/detail/kitware-file-viewers/kfejllcdobijgoijjpfcbaoicjbdkhfb)
 
-It should work (not tested) with:
- - all chromium-based browsers such as Opera
- - Safari
-
-## Viewer support
+# Viewers
 
 The following 💻 online viewers are supported:
  - [Kitware Glance](https://kitware.github.io/glance/)
@@ -57,20 +53,6 @@ Here is the explicit list of files supported by the extension :
  - vtkjs (Zip)
  - vtp (vtkPolyData)
  - vtu (vtkUnstructedGrid)
-# Install
-
-Until the extension is published, you have to manually install it.
-
-## Chrome
-Follow the [Loading unpacked extension tutorial](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
-
-## Firefox
-
-Follow the [Temporary installation tutorial](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/).
-
-### Edge
-
-Follow the [Sideload an extension tutorial](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).
 
 # Usage
 
@@ -99,15 +81,35 @@ Then you can open on your browser localhost:8000 to see your files.
 
 ## 3D Slicer
 
-Shall you want to open your URLs with 3D Slicer, you need to save the [LoadRemoteFile module](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L19-L20) into the qt-scripted-modules folder of 3D Slicer.
-It will work automatically on Windows. There is [more setup required](https://gist.github.com/lassoan/534298ee567000a37b3cb89de01750b8#file-loadremotefile-py-L13) on other OS.
+Shall you want to open your URLs with 3D Slicer, you need to save the [LoadRemoteFile module](https://github.com/PerkLab/SlicerSandbox/blob/master/LoadRemoteFile/LoadRemoteFile.py) into the qt-scripted-modules folder of 3D Slicer.
+It will work automatically on Windows. There is [more setup required](https://github.com/PerkLab/SlicerSandbox/blob/master/README.md#loadremotefile) on other OS.
 
-# Help and Support #
-[Kitware](https://www.kitware.com/) offers advanced software R&D solutions and services. Find out how we can help with your next project.
+
+# Browser support
+
+It is known to work with at least the following desktop browsers:
+ - Firefox 108.0.2
+ - Chrome 108.0.5359.126
+ - Edge 109.0.1518.55
+
+It should work (not tested) with:
+ - all chromium-based browsers such as Opera
+
+A bit more work is required to support:
+ - Safari
+
+# Debug
+
+To develop and debug, you can manually install the extension by following those tutorials 
+
+ - Chrome: Follow the [Loading unpacked extension tutorial](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
+ - Firefox: Follow the [Temporary installation tutorial](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/).
+ - Edge: Follow the [Sideload an extension tutorial](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading).
+
 
 # Packaging #
 
-## Manifest v2 package##
+## Manifest v2 package ##
 
 Copy manifests/manifest-v2.json into manifest.json.
 Create a zip archive.
@@ -116,3 +118,6 @@ Create a zip archive.
 
 Copy manifests/manifest-v3.json into manifest.json.
 Create a zip archive.
+
+# Help and Support #
+[Kitware](https://www.kitware.com/) offers advanced software R&D solutions and services. Find out how we can help with your next project.
