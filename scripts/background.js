@@ -1,4 +1,4 @@
-console.log('Installing Open...');
+console.log('Installing KitwareFileViewers...');
 const dataTypes = {
   ImageData: 'ImageData',
   PolyData: 'PolyData',
@@ -310,8 +310,8 @@ function getViewer(type, name, viewers = VIEWERS) {
 }
 
 const menuIdSeparator = ':';
-chrome.runtime.onInstalled.addListener(async () => {
-  console.log('onInstalled...');
+async function registerMenus() {
+  console.log('register menus...');
   const viewerTypes = {
     online: "💻",
     desktop: "🖥️",
@@ -358,7 +358,22 @@ chrome.runtime.onInstalled.addListener(async () => {
     addActionInContextMenu(viewerType);
   });
 
-});
+}
+let eventPagesSupported = true;
+try {
+  // Firefox throws a synchronous error when onclick is passed in an event page.
+  browser.contextMenus.create({ id: "test-menu", onclick: () => {} });
+  eventPagesSupported = false;
+  browser.contextMenus.remove("test-menu");
+} catch (err) {
+  // Firefox 106+ error: Property "onclick" cannot be used in menus.create, replace with an "onClicked" event listener.
+}
+if (eventPagesSupported) {
+  console.log('Event pages are supported');
+  browser.runtime.onInstalled.addListener(registerMenus);
+} else {
+  registerMenus();
+}
 
 async function detectFileType(fileHeaderBuffer, fileTypes = FILE_TYPES) {
   let matchingFileTypes = [];
@@ -542,3 +557,4 @@ async function openViewer(info, tab) {
 }
 
 chrome.contextMenus.onClicked.addListener(openViewer);
+console.log('KitwareFileViewers is installed');
