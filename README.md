@@ -53,6 +53,7 @@ Here is the explicit list of files supported by the extension :
  - vtkjs (Zip)
  - vtp (vtkPolyData)
  - vtu (vtkUnstructedGrid)
+ - json (VolView resource file)
 
 # Usage
 
@@ -112,12 +113,21 @@ To develop and debug, you can manually install the extension by following those 
 ## Manifest v2 package ##
 
 Copy manifests/manifest-v2.json into manifest.json.
-Create a zip archive.
+Create a zip archive:
+```
+cp manifests/manifest-v2.json manifest.json
+tar.exe -a -c -f KitwareFileViewers-v1.0.8-manifest-v2.zip images scripts LICENSE manifest.json options.html README.md
+```
+
 
 ## Manifest v3 package ##
 
 Copy manifests/manifest-v3.json into manifest.json.
-Create a zip archive.
+Create a zip archive:
+```
+cp manifests/manifest-v3.json manifest.json
+tar.exe -a -c -f KitwareFileViewers-v1.0.8-manifest-v3.zip images scripts LICENSE manifest.json options.html README.md
+```
 
 # Help and Support #
 [Kitware](https://www.kitware.com/) offers advanced software R&D solutions and services. Find out how we can help with your next project.
