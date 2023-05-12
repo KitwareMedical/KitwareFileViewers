@@ -207,6 +207,23 @@ FILE_TYPES.push({
   checkHeader: isZip.bind(null, 'ZIP')
 });
 
+FILE_TYPES.push({
+  name: 'Volview JSON',
+  extension: 'json',
+  mimeType: ['/json', 'application/json', 'text/plain'],
+  dataType: dataTypes.ImageDataType,
+  checkHeader: (header) => {
+    const matchingFileTypes = [];
+    const re = new RegExp("\{\s*\"resources\"\s*:\s*\[", 'i');
+    const volviewJSON = header.asString.match(re);
+    if (volviewJSON) {
+      matchingFileTypes.push({...getFileType('Volview JSON')});
+    }
+    return matchingFileTypes;
+  }
+});
+
+
 function mergeFileTypeProperty(property, otherProperty) {
   if (property == null) return otherProperty;
   if (otherProperty == null) return property;
@@ -245,7 +262,7 @@ VIEWERS.push({
 VIEWERS.push({
   name: 'Kitware VolView',
   type: 'online',
-  extension: ['.zip', '.dcm', '.mha'],
+  extension: ['.zip', '.dcm', '.mha', '.json'],
   url: "https://volview.netlify.app/?names=[{fileName}.{fileType}]&urls=[{encode:{url}}]"
 });
 
